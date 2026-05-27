@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Earth Resistance History</title>
+
+<style>
+/* (KEEP YOUR SAME CSS — NO CHANGE NEEDED) */
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#edf1f5;
+    padding:20px;
+}
+
+.container{
+    max-width:1600px;
+    margin:auto;
+}
+
+.main-title{
+    background:#003366;
+    color:white;
+    padding:20px;
+    font-size:32px;
+    text-align:center;
+    font-weight:bold;
+    margin-bottom:25px;
+    border-radius:8px;
+}
+
+.top-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+button{
+    background:#0047ab;
+    color:white;
+    border:none;
+    padding:12px 20px;
+    border-radius:6px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+.clear-btn{background:#c00000;}
+.clear-btn:hover{background:#900000;}
+
+.history-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(420px,1fr));
+    gap:20px;
+}
+
+.history-card{
+    background:white;
+    border-radius:10px;
+    border:1px solid #d5d5d5;
+}
+
+.card-header{
+    background:#16375d;
+    color:white;
+    padding:15px;
+}
+
+.card-body{padding:20px;}
+
+.info-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.info-box{
+    background:#f4f7fb;
+    padding:12px;
+    border-left:5px solid #003366;
+}
+
+.label{font-size:12px;color:#666;}
+.value{font-size:18px;font-weight:bold;color:#003366;}
+
+.result-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:12px;
+}
+
+.result-card{
+    background:#fafafa;
+    padding:12px;
+    border:1px solid #ddd;
+}
+
+.pass{color:green;font-weight:bold;}
+.fail{color:red;font-weight:bold;}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:15px;
+}
+
+th,td{
+    border:1px solid #ccc;
+    padding:8px;
+    text-align:center;
+    font-size:14px;
+}
+
+th{background:#eef5ff;}
+
+.table-wrapper{overflow:auto;margin-top:20px;}
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="main-title">
+        Earth Resistance Test History (FOP)
+    </div>
+
+    <div class="top-bar">
+
+        <button onclick="goBack()">← Back</button>
+        <button class="clear-btn" onclick="clearHistory()">Clear All</button>
+
+    </div>
+
+    <div id="historyContainer"></div>
+
+</div>
+
+<script>
+
+loadHistory();
+
+/* =========================
+LOAD HISTORY (FIXED)
+========================= */
+
+function loadHistory(){
+
+    const historyContainer =
+    document.getElementById("historyContainer");
+
+    const history =
+    JSON.parse(localStorage.getItem("earthHistory")) || [];
+
+    if(history.length === 0){
+        historyContainer.innerHTML =
+        `<div class="empty-box">No Saved History Found</div>`;
+        return;
+    }
+
+    history.reverse();
+
+    let html = `<div class="history-grid">`;
+
+    history.forEach((item,index)=>{
+
+        const accuracyText =
+        item.accuracy || "N/A";
+
+        const accuracyClass =
+        accuracyText.includes("PASS")
+        ? "pass"
+        : "fail";
+
+        html += `
+        <div class="history-card">
+
+            <div class="card-header">
+                <h2>${item.projectName || "Unnamed Project"}</h2>
+                <div>Saved: ${item.savedDate || "-"}</div>
+            </div>
+
+            <div class="card-body">
+
+                <div class="info-grid">
+
+                    <div class="info-box">
+                        <div class="label">Project Reference</div>
+                        <div class="value">${item.projectReference || "-"}</div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="label">Location</div>
+                        <div class="value">${item.location || "-"}</div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="label">Engineer</div>
+                        <div class="value">${item.engineer || "-"}</div>
+                    </div>
+
+                    <div class="info-box">
+                        <div class="label">Weather</div>
+                        <div class="value">${item.weather || "-"}</div>
+                    </div>
+
+                </div>
+
+                <div class="result-grid">
+
+                    <div class="result-card">
+                        <div class="label">Average Resistance</div>
+                        <div class="value">${item.avgResistance || "-"}</div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="label">Resistance @ 62%</div>
+                        <div class="value">${item.resistance62 || "-"}</div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="label">Max Deviation</div>
+                        <div class="value">${item.maxDeviation || "-"}</div>
+                    </div>
+
+                    <div class="result-card">
+                        <div class="label">Accuracy</div>
+                        <div class="value ${accuracyClass}">
+                            ${accuracyText}
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>C2</th>
+                                <th>P2</th>
+                                <th>Ratio</th>
+                                <th>Resistance</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${generateObservationRows(item.observations)}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>`;
+    });
+
+    html += `</div>`;
+    historyContainer.innerHTML = html;
+}
+
+/* =========================
+OBSERVATION ROWS
+========================= */
+
+function generateObservationRows(obs){
+
+    if(!obs || obs.length === 0){
+        return `<tr><td colspan="4">No Data</td></tr>`;
+    }
+
+    return obs.map(o=>`
+        <tr>
+            <td>${o.c2 || "-"}</td>
+            <td>${o.p2 || "-"}</td>
+            <td>${o.ratio || "-"}</td>
+            <td>${o.resistance || "-"}</td>
+        </tr>
+    `).join("");
+}
+
+/* =========================
+ACTIONS
+========================= */
+
+function clearHistory(){
+    if(confirm("Clear all history?")){
+        localStorage.removeItem("earthHistory");
+        loadHistory();
+    }
+}
+
+function goBack(){
+    window.location.href = "index9.html";
+}
+
+</script>
+
+</body>
+</html>

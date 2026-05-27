@@ -1,0 +1,1183 @@
+<!--
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Earth Resistance Test Report</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+
+
+    <div class="header-top">
+
+        <div class="logo-box">
+            <img src="assets/image.svg" alt="Logo">
+        </div>
+
+        <div class="company-details">
+
+            <h2>Hydroplan Group</h2>
+
+            Station Road, Wimborne, Dorset, BH21 1QU
+            <br>
+            Tel: +44 1202 886622
+            <br>
+            Email: info@hydroplangroup.com
+
+        </div>
+
+    </div>
+
+    <div class="main-title">
+        FALL OF POTENTIAL METHOD
+    </div>
+
+    <div class="sub-title">
+        Earth Resistance of a Single Electrode
+    </div>
+
+
+
+    <div class="section">
+
+        <div class="section-title">
+            Project Information
+        </div>
+
+        <table>
+
+            <tr>
+
+                <th>Project Name</th>
+
+                <td>
+                    <input
+                    type="text"
+                    id="projectName">
+                </td>
+
+                <th>Project Reference</th>
+
+                <td>
+                    <input
+                    type="text"
+                    id="projectReference">
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <th>Location</th>
+
+                <td>
+                    <input
+                    type="text"
+                    id="location">
+                </td>
+
+                <th>Date</th>
+
+                <td>
+                    <input
+                    type="date"
+                    id="date">
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <th>Engineer</th>
+
+                <td>
+                    <input
+                    type="text"
+                    id="engineer">
+                </td>
+
+                <th>Weather Condition</th>
+
+                <td>
+                    <input
+                    type="text"
+                    id="weather">
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+    
+
+    <div class="section">
+
+        <div class="section-title">
+            Instrument / Meter Details
+        </div>
+
+        <table id="instrumentTable">
+
+            <thead>
+
+            <tr>
+
+                <th>Meter No</th>
+                <th>Meter Type</th>
+                <th>Serial Number</th>
+                <th>Calibration Due</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr>
+
+                <td>1</td>
+
+                <td>
+                    <input
+                    type="text"
+                    placeholder="DET4TD2">
+                </td>
+
+                <td>
+                    <input
+                    type="text"
+                    placeholder="SN001">
+                </td>
+
+                <td>
+                    <input type="date">
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+        <div class="button-group">
+
+            <button onclick="addInstrumentRow()">
+                Add Instrument
+            </button>
+
+        </div>
+
+    </div>
+
+    
+
+    <div class="section">
+
+        <div class="section-title">
+            Universal Parameters
+        </div>
+
+        <table>
+
+            <tr>
+
+                <th>
+                    Distance Between Electrodes
+                </th>
+
+                <td>
+
+                    <input
+                    type="number"
+                    id="distanceBetween"
+                    value="660">
+
+                </td>
+
+                <th>Unit</th>
+
+                <td>m</td>
+
+            </tr>
+
+            <tr>
+
+                <th>
+                    Desired Accuracy
+                </th>
+
+                <td>
+
+                    <input
+                    type="number"
+                    id="desiredAccuracy"
+                    value="2">
+
+                </td>
+
+                <th>Unit</th>
+
+                <td>%</td>
+
+            </tr>
+
+            <tr>
+
+    <th>
+        Previous 62% Resistance
+    </th>
+
+    <td>
+
+        <input
+        type="number"
+        id="previousFinalResistance"
+        placeholder="Enter previous final result">
+
+    </td>
+
+    <th>Unit</th>
+
+    <td>Ω</td>
+
+</tr>
+
+        </table>
+
+    </div>
+
+    
+
+    <div class="section">
+
+        <div class="section-title">
+            Observation / Reading Table
+        </div>
+
+        <table id="readingTable">
+
+            <thead>
+
+            <tr>
+
+                <th>C2 Distance (m)</th>
+                <th>P2 Distance (m)</th>
+                <th>P2/C2 Ratio</th>
+                <th>Resistance (Ω)</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr>
+
+                <td>
+
+                    <input
+                    type="number"
+                    value="50"
+                    class="c2-input">
+
+                </td>
+
+                <td>
+
+                    <input
+                    type="number"
+                    value="0"
+                    class="p2-input">
+
+                </td>
+
+                <td class="ratio-cell">
+                    0.00
+                </td>
+
+                <td>
+
+                    <input
+                    type="number"
+                    value="0"
+                    class="resistance-input">
+
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+        <div class="button-group">
+
+            <button onclick="addReadingRow()">
+                Add Observation Row
+            </button>
+
+            <button onclick="calculateData()">
+                Calculate Results
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="section">
+
+        <div class="section-title">
+            Calculated Results
+        </div>
+
+        <div class="results-grid">
+
+            <div class="result-card">
+
+                <span class="result-label">
+                    Average Resistance
+                </span>
+
+                <span
+                class="result-value"
+                id="avgResistance">
+
+                    0 Ω
+
+                </span>
+
+            </div>
+
+            <div class="result-card">
+
+                <span class="result-label">
+                    62% Position
+                </span>
+
+                <span
+                class="result-value"
+                id="distance62">
+
+                    0.62
+
+                </span>
+
+            </div>
+
+            <div class="result-card">
+
+                <span class="result-label">
+                    Resistance at 62%
+                </span>
+
+                <span
+                class="result-value"
+                id="resistance62">
+
+                    0 Ω
+
+                </span>
+
+            </div>
+
+            <div class="result-card">
+
+                <span class="result-label">
+                    Maximum Deviation
+                </span>
+
+                <span
+                class="result-value"
+                id="maxDeviation">
+
+                    0 %
+
+                </span>
+
+            </div>
+
+            <div class="result-card">
+
+    <span class="result-label">
+        Accuracy
+    </span>
+
+    <span class="result-value"
+    id="accuracyValue">
+        0 %
+    </span>
+
+</div>
+
+        </div>
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="section-title">
+            Resistance vs P2/C2 Curve
+        </div>
+
+        <div class="chart-container">
+
+            <canvas id="resistanceChart"></canvas>
+
+        </div>
+
+    </div>
+
+
+
+    <div class="section">
+
+        <div class="section-title">
+            Site Location Map
+        </div>
+
+        <table>
+
+            <tr>
+
+                <th>
+                    Google Maps Embed URL
+                </th>
+
+                <td>
+
+                    <input
+                    type="text"
+                    id="mapUrl"
+                    value="https://maps.google.com/maps?q=27.7172,85.3240&z=15&output=embed"
+                    oninput="updateMap()">
+
+                </td>
+
+            </tr>
+
+        </table>
+
+        <div class="map-wrapper">
+
+            <iframe
+            id="mapFrame"
+            loading="lazy">
+            </iframe>
+
+        </div>
+
+    </div>
+
+
+    <div class="section">
+
+        <div class="section-title">
+            Site Photographs
+        </div>
+
+        <div class="photo-grid">
+
+            <div class="photo-card">
+
+                <div class="photo-preview">
+
+                    <input
+                    type="file"
+                    accept="image/*"
+                    onchange="previewImage(event,'img1')">
+
+                    <img id="img1">
+
+                </div>
+
+                <textarea
+                id="desc1"
+                placeholder="Image description">
+                </textarea>
+
+            </div>
+
+            <div class="photo-card">
+
+                <div class="photo-preview">
+
+                    <input
+                    type="file"
+                    accept="image/*"
+                    onchange="previewImage(event,'img2')">
+
+                    <img id="img2">
+
+                </div>
+
+                <textarea
+                id="desc2"
+                placeholder="Image description">
+                </textarea>
+
+            </div>
+
+        </div>
+
+    </div>
+
+  
+
+    <div class="section">
+
+        <div class="section-title">
+            Engineer Remarks
+        </div>
+
+        <textarea
+        id="remarks"
+        class="remarks-box">
+        </textarea>
+
+    </div>
+
+
+
+    <div class="button-group">
+
+        <button onclick="generateProfessionalPDF()">
+            Download Professional PDF
+        </button>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Earth Resistance Test Report</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+
+    <div class="header-top">
+
+        <div class="logo-box">
+            <img src="assets/image.svg" alt="Logo">
+        </div>
+
+        <div class="company-details">
+
+            <h2>Hydroplan Group</h2>
+
+            Station Road, Wimborne, Dorset, BH21 1QU
+            <br>
+            Tel: +44 1202 886622
+            <br>
+            Email: info@hydroplangroup.com
+
+        </div>
+
+    </div>
+
+    <div class="main-title">
+        FALL OF POTENTIAL METHOD
+    </div>
+
+    <div class="sub-title">
+        Earth Resistance of a Single Electrode
+    </div>
+
+    <!-- PROJECT INFO -->
+
+    <div class="section">
+
+        <div class="section-title">
+            Project Information
+        </div>
+
+        <table>
+
+            <tr>
+
+                <th>Project Name</th>
+
+                <td>
+                    <input
+                    type="text"
+                    id="projectName">
+                </td>
+
+                <th>Project Reference</th>
+
+                <td>
+                    <input
+                    type="text"
+                    id="projectReference">
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <th>Location</th>
+
+                <td>
+                    <input
+                    type="text"
+                    id="location">
+                </td>
+
+                <th>Date</th>
+
+                <td>
+                    <input
+                    type="date"
+                    id="date">
+                </td>
+
+            </tr>
+
+            <tr>
+
+                <th>Engineer</th>
+
+                <td>
+                    <input
+                    type="text"
+                    id="engineer">
+                </td>
+
+                <th>Weather Condition</th>
+
+                <td>
+                    <input
+                    type="text"
+                    id="weather">
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+    <!-- INSTRUMENT DETAILS -->
+
+    <div class="section">
+
+        <div class="section-title">
+            Instrument / Meter Details
+        </div>
+
+        <table id="instrumentTable">
+
+            <thead>
+
+            <tr>
+
+                <th>Meter No</th>
+                <th>Meter Type</th>
+                <th>Serial Number</th>
+                <th>Calibration Due</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr>
+
+                <td>1</td>
+
+                <td>
+                    <input
+                    type="text"
+                    placeholder="DET4TD2">
+                </td>
+
+                <td>
+                    <input
+                    type="text"
+                    placeholder="SN001">
+                </td>
+
+                <td>
+                    <input type="date">
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+        <div class="button-group">
+
+            <button onclick="addInstrumentRow()">
+                Add Instrument
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- PARAMETERS -->
+
+    <div class="section">
+
+        <div class="section-title">
+            Universal Parameters
+        </div>
+
+        <table>
+
+            <tr>
+
+                <th>
+                    Distance Between Electrodes
+                </th>
+
+                <td>
+
+                    <input
+                    type="number"
+                    id="distanceBetween"
+                    value="660">
+
+                </td>
+
+                <th>Unit</th>
+
+                <td>m</td>
+
+            </tr>
+
+            <tr>
+
+                <th>
+                    Desired Accuracy
+                </th>
+
+                <td>
+
+                    <input
+                    type="number"
+                    id="desiredAccuracy"
+                    value="2">
+
+                </td>
+
+                <th>Unit</th>
+
+                <td>%</td>
+
+            </tr>
+
+            <!-- PREVIOUS FINAL RESISTANCE -->
+
+            <tr>
+
+                <th>
+                    Previous Final Resistance
+                </th>
+
+                <td colspan="3">
+
+                    <div class="previous-resistance-wrapper">
+
+                        <input
+                        type="number"
+                        id="previousFinalResistance"
+                        placeholder="Enter previous final resistance">
+
+                        <span class="unit-tag">
+                            Ω
+                        </span>
+
+                    </div>
+
+                </td>
+
+            </tr>
+
+        </table>
+
+    </div>
+
+    <!-- OBSERVATION TABLE -->
+
+    <div class="section">
+
+        <div class="section-title">
+            Observation / Reading Table
+        </div>
+
+        <table id="readingTable">
+
+            <thead>
+
+            <tr>
+
+                <th>C2 Distance (m)</th>
+                <th>P2 Distance (m)</th>
+                <th>P2/C2 Ratio</th>
+                <th>Resistance (Ω)</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody>
+
+            <tr>
+
+                <td>
+
+                    <input
+                    type="number"
+                    value="50"
+                    class="c2-input">
+
+                </td>
+
+                <td>
+
+                    <input
+                    type="number"
+                    value="0"
+                    class="p2-input">
+
+                </td>
+
+                <td class="ratio-cell">
+                    0.00
+                </td>
+
+                <td>
+
+                    <input
+                    type="number"
+                    value="0"
+                    class="resistance-input">
+
+                </td>
+
+            </tr>
+
+            </tbody>
+
+        </table>
+
+        <div class="button-group">
+
+            <button onclick="addReadingRow()">
+                Add Observation Row
+            </button>
+
+            <button onclick="calculateData()">
+                Calculate Results
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- RESULTS -->
+
+    <div class="section">
+
+        <div class="section-title">
+            Calculated Results
+        </div>
+
+        <div class="results-grid">
+
+            <div class="result-card">
+
+                <span class="result-label">
+                    Average Resistance
+                </span>
+
+                <span
+                class="result-value"
+                id="avgResistance">
+
+                    0 Ω
+
+                </span>
+
+            </div>
+
+            <div class="result-card">
+
+                <span class="result-label">
+                    62% Position
+                </span>
+
+                <span
+                class="result-value"
+                id="distance62">
+
+                    0.62
+
+                </span>
+
+            </div>
+
+            <div class="result-card">
+
+                <span class="result-label">
+                    Resistance at 62%
+                </span>
+
+                <span
+                class="result-value"
+                id="resistance62">
+
+                    0 Ω
+
+                </span>
+
+            </div>
+
+            <div class="result-card">
+
+                <span class="result-label">
+                    Maximum Deviation
+                </span>
+
+                <span
+                class="result-value"
+                id="maxDeviation">
+
+                    0 %
+
+                </span>
+
+            </div>
+
+            <div class="result-card">
+
+                <span class="result-label">
+                    Accuracy
+                </span>
+
+                <span
+                class="result-value"
+                id="accuracyValue">
+
+                    0 %
+
+                </span>
+
+            </div>
+
+            <!-- PREVIOUS RESULT COMPARISON -->
+
+            <div class="result-card">
+
+                <span class="result-label">
+                    Previous vs Present Status
+                </span>
+
+                <span
+                class="result-value"
+                id="comparisonStatus">
+
+                    NOT CHECKED
+
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- CHART -->
+
+    <div class="section">
+
+        <div class="section-title">
+            Resistance vs P2/C2 Curve
+        </div>
+
+        <div class="chart-container">
+
+            <canvas id="resistanceChart"></canvas>
+
+        </div>
+
+    </div>
+
+    <!-- MAP -->
+
+    <div class="section">
+
+        <div class="section-title">
+            Site Location Map
+        </div>
+
+        <table>
+
+            <tr>
+
+                <th>
+                    Google Maps Embed URL
+                </th>
+
+                <td>
+
+                    <input
+                    type="text"
+                    id="mapUrl"
+                    value="https://maps.google.com/maps?q=27.7172,85.3240&z=15&output=embed"
+                    oninput="updateMap()">
+
+                </td>
+
+            </tr>
+
+        </table>
+
+        <div class="map-wrapper">
+
+            <iframe
+            id="mapFrame"
+            loading="lazy">
+            </iframe>
+
+        </div>
+
+    </div>
+
+    <!-- SITE PHOTOS -->
+
+    <div class="section">
+
+        <div class="section-title">
+            Site Photographs
+        </div>
+
+        <div class="photo-grid">
+
+            <div class="photo-card">
+
+                <div class="photo-preview">
+
+                    <input
+                    type="file"
+                    accept="image/*"
+                    onchange="previewImage(event,'img1')">
+
+                    <img id="img1">
+
+                </div>
+
+                <textarea
+                id="desc1"
+                placeholder="Image description">
+                </textarea>
+
+            </div>
+
+            <div class="photo-card">
+
+                <div class="photo-preview">
+
+                    <input
+                    type="file"
+                    accept="image/*"
+                    onchange="previewImage(event,'img2')">
+
+                    <img id="img2">
+
+                </div>
+
+                <textarea
+                id="desc2"
+                placeholder="Image description">
+                </textarea>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- REMARKS -->
+
+    <div class="section">
+
+        <div class="section-title">
+            Engineer Remarks
+        </div>
+
+        <textarea
+        id="remarks"
+        class="remarks-box">
+        </textarea>
+
+    </div>
+
+    <!-- DOWNLOAD -->
+
+    <div class="button-group">
+
+        <button onclick="generateProfessionalPDF()">
+            Download Professional PDF
+        </button>
+
+        <button onclick="saveHistory()">
+            Save History
+        </button>
+
+    </div>
+
+    <div class="button-group"><button onclick="window.open('history.html','_blank')">
+        View History
+        </button>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

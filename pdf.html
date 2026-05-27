@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+Professional Earth Resistance Report
+</title>
+
+<link
+rel="stylesheet"
+href="style.css">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<style>
+
+body{
+    margin:0;
+    padding:20px;
+    background:#dfe6ee;
+    font-family:Arial,sans-serif;
+}
+
+.pdf-page{
+    width:210mm;
+    min-height:297mm;
+    background:#fff;
+    margin:auto;
+    padding:18mm;
+    box-sizing:border-box;
+    margin-bottom:20px;
+    box-shadow:0 0 15px rgba(0,0,0,0.15);
+}
+
+.page-break{
+    page-break-before:always;
+}
+
+.pdf-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:3px solid #0047ab;
+    padding-bottom:12px;
+    margin-bottom:20px;
+}
+
+.pdf-logo{
+    width:100px;
+}
+
+.pdf-company{
+    text-align:right;
+}
+
+.pdf-company h1{
+    margin:0;
+    color:#0047ab;
+    font-size:24px;
+}
+
+.pdf-company p{
+    margin:3px 0;
+    font-size:13px;
+}
+
+.pdf-section{
+    margin-bottom:22px;
+}
+
+.pdf-section-title{
+    background:#0047ab;
+    color:#fff;
+    padding:10px;
+    font-weight:bold;
+    font-size:14px;
+    margin-bottom:10px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:12px;
+}
+
+table th,
+table td{
+    border:1px solid #c7d1dd;
+    padding:8px;
+}
+
+table th{
+    background:#eef3f9;
+    width:35%;
+    text-align:left;
+}
+
+.pdf-chart{
+    width:100%;
+    height:auto;
+    border:1px solid #ccc;
+    display:block;
+}
+
+.pdf-map{
+    width:100%;
+    height:auto;
+    border:1px solid #ccc;
+    display:block;
+}
+
+.pdf-photo-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+}
+
+.pdf-photo-grid img{
+    width:100%;
+    height:220px;
+    object-fit:cover;
+    border:1px solid #ccc;
+}
+
+.pdf-photo-grid p{
+    margin-top:6px;
+    font-size:12px;
+}
+
+.pdf-signatures{
+    margin-top:60px;
+    display:flex;
+    justify-content:space-between;
+}
+
+.sign-box{
+    width:30%;
+    text-align:center;
+    font-size:12px;
+}
+
+.sign-line{
+    border-top:1px solid #000;
+    margin-bottom:6px;
+    padding-top:5px;
+}
+
+.download-btn{
+    position:fixed;
+    right:20px;
+    bottom:20px;
+    background:#0047ab;
+    color:#fff;
+    border:none;
+    padding:14px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:15px;
+    z-index:9999;
+    box-shadow:0 5px 15px rgba(0,0,0,0.25);
+}
+
+.download-btn:hover{
+    background:#003580;
+}
+
+@media print{
+
+    .download-btn{
+        display:none;
+    }
+
+    body{
+        background:#fff;
+        padding:0;
+    }
+
+    .pdf-page{
+        box-shadow:none;
+        margin:0;
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<button
+class="download-btn"
+onclick="downloadProfessionalPDF()">
+
+Download Professional PDF
+
+</button>
+
+<!-- PAGE 1 -->
+
+<div
+class="pdf-page"
+id="pdfPage1">
+
+    <!-- HEADER -->
+
+    <div class="pdf-header">
+
+        <img
+        src="assets/image.svg"
+        class="pdf-logo">
+
+        <div class="pdf-company">
+
+            <h1>
+                EARTH RESISTANCE TEST REPORT
+            </h1>
+
+            <p>
+                Fall of Potential Method
+            </p>
+
+            <p>
+                Hydroplan Group
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- PROJECT -->
+
+    <div class="pdf-section">
+
+        <div class="pdf-section-title">
+            Project Information
+        </div>
+
+        <table>
+
+            <tr>
+                <th>Project Name</th>
+                <td id="pdfProjectName"></td>
+            </tr>
+
+            <tr>
+                <th>Project Reference</th>
+                <td id="pdfProjectReference"></td>
+            </tr>
+
+            <tr>
+                <th>Location</th>
+                <td id="pdfLocation"></td>
+            </tr>
+
+            <tr>
+                <th>Date</th>
+                <td id="pdfDate"></td>
+            </tr>
+
+            <tr>
+                <th>Engineer</th>
+                <td id="pdfEngineer"></td>
+            </tr>
+
+            <tr>
+                <th>Weather</th>
+                <td id="pdfWeather"></td>
+            </tr>
+
+        </table>
+
+    </div>
+
+    <!-- INSTRUMENT -->
+
+    <div class="pdf-section">
+
+        <div class="pdf-section-title">
+            Instrument Details
+        </div>
+
+        <table id="pdfInstrumentTable"></table>
+
+    </div>
+
+    <!-- OBSERVATION -->
+
+    <div class="pdf-section">
+
+        <div class="pdf-section-title">
+            Observation / Reading Table
+        </div>
+
+        <table id="pdfObservationTable"></table>
+
+    </div>
+
+    <!-- RESULTS -->
+
+    <div class="pdf-section">
+
+        <div class="pdf-section-title">
+            Calculated Results
+        </div>
+
+        <table>
+
+            <tr>
+                <th>Average Resistance</th>
+                <td id="pdfAvg"></td>
+            </tr>
+
+            <tr>
+                <th>62% Position</th>
+                <td id="pdfDistance"></td>
+            </tr>
+
+            <tr>
+                <th>Resistance at 62%</th>
+                <td id="pdfResistance62"></td>
+            </tr>
+
+            <tr>
+                <th>Previous Final Resistance</th>
+                <td id="pdfPreviousResistance"></td>
+            </tr>
+
+            <tr>
+                <th>Difference</th>
+                <td id="pdfDifference"></td>
+            </tr>
+
+            <tr>
+                <th>Maximum Deviation</th>
+                <td id="pdfDeviation"></td>
+            </tr>
+
+            <tr>
+                <th>Accuracy</th>
+                <td id="pdfAccuracy"></td>
+            </tr>
+
+            <tr>
+                <th>Status</th>
+                <td id="pdfStatus"></td>
+            </tr>
+
+        </table>
+
+    </div>
+
+</div>
+
+<!-- PAGE 2 -->
+
+<div
+class="pdf-page page-break"
+id="pdfPage2">
+
+    <!-- GRAPH -->
+
+    <div class="pdf-section">
+
+        <div class="pdf-section-title">
+            Resistance vs P2/C2 Curve
+        </div>
+
+        <img
+        id="chartImage"
+        class="pdf-chart">
+
+    </div>
+
+    <!-- MAP -->
+
+<div class="pdf-section">
+
+    <div class="pdf-section-title">
+        Site Location
+    </div>
+
+    <iframe
+        id="pdfMapFrame"
+        class="pdf-map"
+        loading="lazy"
+        allowfullscreen>
+    </iframe>
+
+</div>
+
+    <!-- PHOTOS -->
+
+    <div class="pdf-section">
+
+        <div class="pdf-section-title">
+            Site Photographs
+        </div>
+
+        <div class="pdf-photo-grid">
+
+            <div>
+
+                <img id="pdfImg1">
+
+                <p id="pdfDesc1"></p>
+
+            </div>
+
+            <div>
+
+                <img id="pdfImg2">
+
+                <p id="pdfDesc2"></p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- REMARKS -->
+
+    <div class="pdf-section">
+
+        <div class="pdf-section-title">
+            Engineer Remarks
+        </div>
+
+        <p id="pdfRemarks"></p>
+
+    </div>
+
+    <!-- SIGNATURES -->
+
+    <div class="pdf-signatures">
+
+        <div class="sign-box">
+
+            <div class="sign-line"></div>
+
+            Prepared By
+
+        </div>
+
+        <div class="sign-box">
+
+            <div class="sign-line"></div>
+
+            Checked By
+
+        </div>
+
+        <div class="sign-box">
+
+            <div class="sign-line"></div>
+
+            Approved By
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* =========================================
+LOAD REPORT DATA
+========================================= */
+
+window.onload = function(){
+
+    const data =
+    JSON.parse(
+        localStorage.getItem(
+            "earthReport"
+        )
+    );
+
+    console.log(data);
+
+    if(!data){
+
+        alert(
+            "No report data found."
+        );
+
+        return;
+    }
+
+    // =====================================
+    // PROJECT INFO
+    // =====================================
+
+    document.getElementById(
+        "pdfProjectName"
+    ).innerText =
+    data.projectName || "-";
+
+    document.getElementById(
+        "pdfProjectReference"
+    ).innerText =
+    data.projectReference || "-";
+
+    document.getElementById(
+        "pdfLocation"
+    ).innerText =
+    data.location || "-";
+
+    document.getElementById(
+        "pdfDate"
+    ).innerText =
+    data.date || "-";
+
+    document.getElementById(
+        "pdfEngineer"
+    ).innerText =
+    data.engineer || "-";
+
+    document.getElementById(
+        "pdfWeather"
+    ).innerText =
+    data.weather || "-";
+
+    // =====================================
+    // RESULTS
+    // =====================================
+
+    document.getElementById(
+        "pdfAvg"
+    ).innerText =
+    data.avgResistance || "-";
+
+    document.getElementById(
+        "pdfDistance"
+    ).innerText =
+    data.distance62 || "-";
+
+    document.getElementById(
+        "pdfResistance62"
+    ).innerText =
+    data.resistance62 || "-";
+
+    document.getElementById(
+        "pdfPreviousResistance"
+    ).innerText =
+    data.previousResistance || "-";
+
+    document.getElementById(
+        "pdfDifference"
+    ).innerText =
+    data.difference || "-";
+
+    document.getElementById(
+        "pdfDeviation"
+    ).innerText =
+    data.maxDeviation || "-";
+
+    document.getElementById(
+        "pdfAccuracy"
+    ).innerText =
+    data.accuracy || "-";
+
+    document.getElementById(
+        "pdfStatus"
+    ).innerText =
+    data.status || "-";
+
+    // =====================================
+    // REMARKS
+    // =====================================
+
+    document.getElementById(
+        "pdfRemarks"
+    ).innerText =
+    data.remarks || "-";
+
+    /* =========================================
+MAP
+========================================= */
+
+const mapFrame =
+document.getElementById(
+    "pdfMapFrame"
+);
+
+if(data.map){
+
+    mapFrame.src = data.map;
+
+}
+
+    // =====================================
+    // IMAGES
+    // =====================================
+
+    document.getElementById(
+        "pdfImg1"
+    ).src =
+    data.img1 || "";
+
+    document.getElementById(
+        "pdfImg2"
+    ).src =
+    data.img2 || "";
+
+    document.getElementById(
+        "pdfDesc1"
+    ).innerText =
+    data.desc1 || "";
+
+    document.getElementById(
+        "pdfDesc2"
+    ).innerText =
+    data.desc2 || "";
+
+    // =====================================
+    // CHART
+    // =====================================
+
+    document.getElementById(
+        "chartImage"
+    ).src =
+    data.chart || "";
+
+    // =====================================
+    // INSTRUMENT TABLE
+    // =====================================
+
+    let instrumentHTML = `
+
+        <tr>
+
+            <th>No</th>
+            <th>Meter Type</th>
+            <th>Serial Number</th>
+            <th>Calibration Due</th>
+
+        </tr>
+
+    `;
+
+    if(data.instruments){
+
+        data.instruments.forEach(item=>{
+
+            instrumentHTML += `
+
+                <tr>
+
+                    <td>${item.no}</td>
+                    <td>${item.type}</td>
+                    <td>${item.serial}</td>
+                    <td>${item.due}</td>
+
+                </tr>
+
+            `;
+
+        });
+
+    }
+
+    document.getElementById(
+        "pdfInstrumentTable"
+    ).innerHTML =
+    instrumentHTML;
+
+    // =====================================
+    // OBSERVATION TABLE
+    // =====================================
+
+    let observationHTML = `
+
+        <tr>
+
+            <th>C2 Distance</th>
+            <th>P2 Distance</th>
+            <th>P2/C2 Ratio</th>
+            <th>Resistance</th>
+
+        </tr>
+
+    `;
+
+    if(data.observations){
+
+        data.observations.forEach(item=>{
+
+            observationHTML += `
+
+                <tr>
+
+                    <td>${item.c2}</td>
+                    <td>${item.p2}</td>
+                    <td>${item.ratio}</td>
+                    <td>${item.resistance}</td>
+
+                </tr>
+
+            `;
+
+        });
+
+    }
+
+    document.getElementById(
+        "pdfObservationTable"
+    ).innerHTML =
+    observationHTML;
+
+};
+
+/* =========================================
+DOWNLOAD PDF
+========================================= */
+
+async function downloadProfessionalPDF(){
+
+    const { jsPDF } =
+    window.jspdf;
+
+    const pdf =
+    new jsPDF(
+        "p",
+        "mm",
+        "a4"
+    );
+
+    const pages = [
+
+        document.getElementById(
+            "pdfPage1"
+        ),
+
+        document.getElementById(
+            "pdfPage2"
+        )
+
+    ];
+
+    for(let i=0;i<pages.length;i++){
+
+        const canvas =
+        await html2canvas(
+            pages[i],
+            {
+                scale:2,
+                useCORS:true,
+                allowTaint:true
+            }
+        );
+
+        const imgData =
+        canvas.toDataURL(
+            "image/png"
+        );
+
+        const pdfWidth = 210;
+
+        const pdfHeight =
+        (
+            canvas.height
+            *
+            pdfWidth
+        )
+        /
+        canvas.width;
+
+        if(i !== 0){
+
+            pdf.addPage();
+
+        }
+
+        pdf.addImage(
+
+            imgData,
+            "PNG",
+            0,
+            0,
+            pdfWidth,
+            pdfHeight
+
+        );
+
+    }
+
+    pdf.save(
+        "Earth_Resistance_Test_Report.pdf"
+    );
+
+}
+
+</script>
+
+</body>
+</html>
